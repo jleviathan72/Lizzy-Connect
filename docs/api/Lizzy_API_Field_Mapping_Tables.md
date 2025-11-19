@@ -3,8 +3,33 @@
 **To:** Lizzy Technical Team  
 **From:** Jonathan (Lizzy Agentic Commerce Project)  
 **Date:** November 17, 2025  
-**Version:** 1.2  
+**Version:** 1.2.0
+**Status:** Draft - In Review
 **Purpose:** Map API requirements to Lizzy database schema
+
+-----
+
+## Changelog (v1.2.0)
+
+### Changed
+- Field name model to model name in Equipment Root Fields list
+- Updated answers for Critical Questions under Table 2.1: Service Order Fields
+- Answered questions under Table 2.2: Service Order Invoice Fields and moved under Critical Questions Section under Table 2.1: Service Order Fields
+- In Parts Order Fields section, replaced equipment_name with Make, Model Name and Model Number
+
+### Added
+- Model Number to Equipment Root Fields list
+- multiple Lizzy App field names and comments with sample data to Equipment Root Fields list
+- Type field to Service Order Fields
+- Status field to Service Order Fields
+- processed_date field to Service Order Fields
+
+### Removed
+- Status field from Equipment Root Fields list (applies to orders, not equipment)
+- vin field from Equipment Root Fields (same as SN)
+- purchase_date field from Equipment Root Fields (applies to orders, not equipment)
+- last_service_date field from Equipment Root Fields (applies to orders, not equipment)
+- Entire section Table 2.2: Service Order Invoice Fields (there are not separate entities for service orders and service invoices)
 
 -----
 
@@ -85,15 +110,12 @@ This document contains **detailed field mapping tables** for each API endpoint. 
 | Field Name (Our Requirement) | Lizzy App Field Name | Lizzy Navigation Path | Lizzy Table.Column | Comments |
 |------------------------------|---------------------|----------------------|-------------------|----------|
 | equipment_id | | | | Unique equipment identifier |
-| make | | | | Manufacturer (e.g., "Honda") |
-| model | | | | Model name (e.g., "HRX217") |
-| sku | | | | SKU or model number |
-| unit_type | | | | Category (e.g., "Mower", "Chainsaw") |
-| serial_number | | | | Serial number for this unit |
-| vin | | | | VIN (if applicable, otherwise empty) |
-| status | | | | Equipment status |
-| purchase_date | | | | Date customer purchased |
-| last_service_date | | | | Date of most recent service |
+| make | Make | | | Manufacturer (e.g., "Honda") |
+| model name | Model Name | | | Model name (e.g., "HRX217") |
+| model number | Model Number | | | Model number (e.g., "HRX217K6VKA") |
+| sku | stock number | | | dealer assigned value (e.g., "143 NCLC") |
+| unit_type | unit category | | | 40 dealer-specific values (e.g., "Walk Behind Mower", "Zero-Turn"), else Lizzy defaults values as last 5 digits of SN+date received |
+| serial_number | vin/serial# | | | Serial number for this unit |
 
 **Critical Questions:**
 
@@ -220,26 +242,27 @@ This document contains **detailed field mapping tables** for each API endpoint. 
 | Field Name (Our Requirement) | Lizzy App Field Name | Lizzy Navigation Path | Lizzy Table.Column | Comments |
 |------------------------------|---------------------|----------------------|-------------------|----------|
 | order_id | | | | Service order identifier |
+| type | type | | | Values: "Service Ticket", "Major Unit Sale", "Major Unit Quote", "Parts Quote", "Parts Order", "Internet". May use type=Internet for new parts orders? |
 | equipment_id | | | | Related equipment ID |
 | equipment_name | | | | Equipment make/model for display |
-| status | | | | Order status |
+| status | Service Ticket Status | | | values: "Open", "Awaiting Approval", "This is an Estimate", "Completed", "Processed" |
 | estimated_completion | | | | Estimated completion date |
 | created_date | | | | Order creation date |
+| processed_date | | | | date service order was processed |
 | description | | | | Service description/problem |
 
 **Critical Questions:**
 
 1. **status field - Service Orders:**
-   - What are ALL possible status values?
-   - We need to filter for "in_progress" or "in_service"
-   - Possible values we imagine:
-     - "pending" (just created)
-     - "in_progress" (being worked on)
+   - What are ALL possible status values? - Answer: See comments in table above for field status
+   - We need to filter for "in_progress" or "in_service" - Answer: Business logic will be built into twillio (not API's), so no need to define here.
+   - Status definitions:
+     - "open" (just created)
+     - "This is an Estimate" (order has been updated with estimate details including parts and labor estimates)
      - "awaiting_parts" (waiting for parts)
-     - "ready_for_pickup" (service complete)
-     - "complete" (picked up)
-     - "cancelled"
-   - Please provide complete list with definitions
+     - "Awaiting Approval" (Estimate provided to customer, awaiting customer approval before performing service work)
+     - "Completed" (service complete and ready for pickup)
+     - "Processed" (picked up and paid for)
 
 2. **equipment_name:**
    - Is this stored or should we construct from make + model?
@@ -250,28 +273,11 @@ This document contains **detailed field mapping tables** for each API endpoint. 
    - Who sets this (automatically, technician, system)?
    - How reliable for customer communication?
 
----
-
-### Table 2.2: Service Order Invoice Fields
-
-**Path in response:** `service_orders[].invoice`
-
-| Field Name (Our Requirement) | Lizzy App Field Name | Lizzy Navigation Path | Lizzy Table.Column | Comments |
-|------------------------------|---------------------|----------------------|-------------------|----------|
-| invoice (object) | | | | Invoice for this service order |
-| invoice.invoice_id | | | | Invoice identifier |
-| invoice.amount | | | | Total amount (decimal) |
-| invoice.status | | | | Payment status |
-| invoice.due_date | | | | Payment due date |
-| invoice.invoice_url | | | | URL to view invoice |
-| invoice.payment_url | | | | URL to make payment |
-
-**Questions:**
-1. Is invoice created immediately when service order created?
-2. Or created later in workflow?
-3. Are invoice_url and payment_url public (no auth required)?
-4. Do these URLs work on mobile devices?
-5. Do payment URLs support Apple Pay / Google Pay?
+4. Is invoice created immediately when service order created? - Answer: Service orders and their invoices are not separate entities (at least for the purpose of our project). Invoices are generated after Service Orders are put in the 'Processed' status, and then URL links are sent to customer to view their invoice and/or make payment. For the purposes of our agentic workflow, we will just use service orders (also known as Service Tickets)
+5. Or created later in workflow? - Answer: See answer above.
+6. Are invoice_url and payment_url public (no auth required)? - Answer: Yes
+7. Do these URLs work on mobile devices? - Answer: Yes
+8. Do payment URLs support Apple Pay / Google Pay? - Answer: Do not believe so
 
 ---
 
@@ -282,8 +288,11 @@ This document contains **detailed field mapping tables** for each API endpoint. 
 | Field Name (Our Requirement) | Lizzy App Field Name | Lizzy Navigation Path | Lizzy Table.Column | Comments |
 |------------------------------|---------------------|----------------------|-------------------|----------|
 | order_id | | | | Parts order identifier |
+| type | type | | | Values: "Service Ticket", "Major Unit Sale", "Major Unit Quote", "Parts Quote", "Parts Order", "Internet". May use type=Internet for new parts orders? |
 | equipment_id | | | | Related equipment ID |
-| equipment_name | | | | Equipment make/model |
+| make | Make | | | Manufacturer (e.g., "Honda") |
+| model name | Model Name | | | Model name (e.g., "HRX217") |
+| model number | Model Number | | | Model number (e.g., "HRX217K6VKA") |
 | status | | | | Order status |
 | tracking_number | | | | Shipping tracking number |
 | estimated_delivery | | | | Estimated delivery date |
