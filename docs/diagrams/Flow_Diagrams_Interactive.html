@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lizzy SMS Workflow - Complete Flow Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav h2 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        .nav ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        .nav li a {
+            display: block;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav li a:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            margin-top: 30px;
+        }
+        
+        .diagram {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .mermaid {
+            text-align: center;
+        }
+        
+        .message-template {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            border-radius: 5px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .legend {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+        
+        .legend h4 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            margin-right: 15px;
+            border: 2px solid #333;
+        }
+        
+        .priority-critical {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .priority-important {
+            color: #f57c00;
+            font-weight: bold;
+        }
+        
+        .priority-optional {
+            color: #388e3c;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .section {
+                page-break-inside: avoid;
+                box-shadow: none;
+            }
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔄 Lizzy SMS Workflow System</h1>
+        <h2>Complete Flow Diagrams - Interactive Version</h2>
+        <p><strong>Version:</strong> 1.2 MVP</p>
+        <p><strong>Date:</strong> November 17, 2025</p>
+        <p><strong>Purpose:</strong> Visual blueprints for Twilio Studio implementation</p>
+    </div>
+
+    <div class="nav" id="top">
+        <h2>📋 Quick Navigation</h2>
+        <ul>
+            <li><a href="#legend">📊 Diagram Legend</a></li>
+            <li><a href="#architecture">🏗️ System Architecture</a></li>
+            <li><a href="#main-menu">1️⃣ Main Menu</a></li>
+            <li><a href="#troubleshoot">2️⃣ Troubleshoot Equipment</a></li>
+            <li><a href="#schedule">3️⃣ Schedule Service</a></li>
+            <li><a href="#status">4️⃣ Service Status</a></li>
+            <li><a href="#order-parts">5️⃣ Order Parts</a></li>
+            <li><a href="#parts-status">6️⃣ Parts Order Status</a></li>
+            <li><a href="#invoice">7️⃣ View/Pay Invoice</a></li>
+            <li><a href="#cross-flow">🔗 Cross-Workflow Context</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📖 How to Use This Document</h2>
+        
+        <div class="info-box">
+            <h3>✨ Interactive Features</h3>
+            <p>This HTML document renders all Mermaid diagrams as interactive flowcharts. You can:</p>
+            <ul>
+                <li>View all diagrams rendered beautifully</li>
+                <li>Click navigation links to jump to sections</li>
+                <li>Print this document (diagrams will print correctly)</li>
+                <li>Share this file - it works offline</li>
+            </ul>
+        </div>
+
+        <div class="success-box">
+            <h3>🎯 For Implementation</h3>
+            <ol>
+                <li><strong>Study the diagrams</strong> - Understand complete workflow logic</li>
+                <li><strong>Map to widgets</strong> - Each box represents a Twilio Studio widget</li>
+                <li><strong>Follow the arrows</strong> - Build connections in Studio</li>
+                <li><strong>Reference constantly</strong> - Keep this open while building</li>
+            </ol>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ Important Notes</h3>
+            <ul>
+                <li>Diagrams show <strong>every widget</strong> needed - don't skip any</li>
+                <li><strong>Dashed lines</strong> indicate cross-workflow triggers (critical feature)</li>
+                <li><strong>Colors matter</strong> - See legend below for widget types</li>
+                <li>Build flows in recommended order (Main Menu first)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section" id="legend">
+        <h2>📊 Diagram Legend</h2>
+        
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Start Point]) --> Action[Action Widget]
+    Action --> Decision{Decision Point}
+    Decision -->|Option 1| Result1[Outcome 1]
+    Decision -->|Option 2| Result2[Outcome 2]
+    Result1 --> API[HTTP Request: API Call]
+    API --> Function[[Run Function: Custom Logic]]
+    Function --> Message[Send Message: Display]
+    Message -.->|Cross-Flow| OtherFlow([Trigger Other Flow])
+    Result2 --> End([End])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style API fill:#cce5ff
+    style Function fill:#fff3cd
+    style Decision fill:#e7e7e7
+            </div>
+        </div>
+
+        <div class="legend">
+            <h4>Widget Type Colors</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #d4edda;"></div>
+                <div><strong>Green (Rounded):</strong> Start/End points</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #cce5ff;"></div>
+                <div><strong>Blue:</strong> HTTP Request (API calls to Lizzy)</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff3cd;"></div>
+                <div><strong>Yellow:</strong> Run Function (Twilio Functions)</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: white; border: 2px solid #333;"></div>
+                <div><strong>White:</strong> Send & Wait for Reply, Send Message</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e7e7e7;"></div>
+                <div><strong>Gray (Diamond):</strong> Split Based On (decision points)</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h4>📌 Line Types</h4>
+            <p><strong>Solid lines (→):</strong> Normal flow progression within same workflow</p>
+            <p><strong>Dashed lines (-.->):</strong> Cross-workflow triggers via REST API</p>
+        </div>
+    </div>
+
+    <div class="section" id="architecture">
+        <h2>🏗️ High-Level System Architecture</h2>
+        
+        <p>This diagram shows how all 7 workflows connect together, interact with Twilio Functions, and communicate with the Lizzy API.</p>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TB
+    subgraph "Customer Interaction"
+        Phone[Customer Phone Number]
+        SMS[📱 SMS Message]
+    end
+    
+    subgraph "Twilio Platform"
+        TwilioSMS[Twilio SMS Gateway]
+        
+        subgraph "Studio Flows"
+            MainMenu[Main Menu Flow]
+            Troubleshoot[Troubleshoot Equipment]
+            Service[Schedule Service]
+            ServiceStatus[Service Status]
+            OrderParts[Order Parts]
+            PartsStatus[Parts Order Status]
+            Invoice[View/Pay Invoice]
+        end
+        
+        subgraph "Twilio Functions"
+            SearchSKU[searchEquipmentBySKU]
+            SearchSN[searchEquipmentBySN]
+            AsyncService[createServiceOrderAsync]
+            AsyncParts[createPartsOrderAsync]
+            TriggerFlow[triggerFlowWithContext]
+        end
+    end
+    
+    subgraph "External Systems"
+        LizzyAPI[Lizzy API]
+        LizzySMS[Lizzy SMS Interface]
+    end
+    
+    Phone -->|Text Message| SMS
+    SMS --> TwilioSMS
+    TwilioSMS --> MainMenu
+    
+    MainMenu -->|Option 1| Troubleshoot
+    MainMenu -->|Option 2| Service
+    MainMenu -->|Option 3| ServiceStatus
+    MainMenu -->|Option 4| OrderParts
+    MainMenu -->|Option 5| PartsStatus
+    MainMenu -->|Option 6| Invoice
+    
+    Troubleshoot -.->|With Context| Service
+    Troubleshoot -.->|With Context| OrderParts
+    Service -.->|With Context| OrderParts
+    OrderParts -.->|Return| Service
+    
+    Troubleshoot --> SearchSKU
+    Troubleshoot --> SearchSN
+    Service --> AsyncService
+    OrderParts --> AsyncParts
+    Troubleshoot --> TriggerFlow
+    Service --> TriggerFlow
+    OrderParts --> TriggerFlow
+    
+    MainMenu --> LizzyAPI
+    Troubleshoot --> LizzyAPI
+    Service --> LizzyAPI
+    ServiceStatus --> LizzyAPI
+    OrderParts --> LizzyAPI
+    PartsStatus --> LizzyAPI
+    Invoice --> LizzyAPI
+    
+    AsyncService --> LizzyAPI
+    AsyncParts --> LizzyAPI
+    
+    TwilioSMS --> LizzySMS
+    
+    style MainMenu fill:#90EE90
+    style Troubleshoot fill:#87CEEB
+    style Service fill:#87CEEB
+    style ServiceStatus fill:#87CEEB
+    style OrderParts fill:#87CEEB
+    style PartsStatus fill:#87CEEB
+    style Invoice fill:#87CEEB
+    style LizzyAPI fill:#FFB6C1
+    style TriggerFlow fill:#FFD700
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h4>🎯 Key Architectural Points</h4>
+            <ul>
+                <li><strong>7 Studio Flows</strong> - Each handles a specific workflow</li>
+                <li><strong>5 Twilio Functions</strong> - Custom logic for search, async, and cross-flow</li>
+                <li><strong>Dashed arrows</strong> - Equipment context passing between flows (critical feature)</li>
+                <li><strong>Single SMS gateway</strong> - All messages through Twilio</li>
+                <li><strong>Lizzy API integration</strong> - All data from Lizzy backend</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section" id="main-menu">
+        <h2>1️⃣ Workflow: Main Menu</h2>
+        
+        <p>Entry point for all customer interactions. Validates customer, displays menu, routes to appropriate workflow.</p>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Incoming SMS]) --> Init[Store Phone Number]
+    Init --> GetCustomer[HTTP Request: GET /customers/by-phone]
+    GetCustomer --> CheckFound{Customer Found?}
+    
+    CheckFound -->|No| NotFound[Send: Account Not Found]
+    NotFound --> NotFoundMenu{User Response}
+    NotFoundMenu -->|Text| TextShop[Trigger: Text Shop]
+    NotFoundMenu -->|Call| CallShop[Send: Call Info]
+    NotFoundMenu -->|Menu| Start
+    
+    CheckFound -->|Yes| StoreProfile[Store customerProfile Variable]
+    StoreProfile --> ShowMenu[Send & Wait: Main Menu 1-6]
+    
+    ShowMenu --> Choice{User Selection}
+    
+    Choice -->|1| Flow1([Trigger: Troubleshoot Equipment])
+    Choice -->|2| Flow2([Trigger: Schedule Service])
+    Choice -->|3| Flow3([Trigger: Service Status])
+    Choice -->|4| Flow4([Trigger: Order Parts])
+    Choice -->|5| Flow5([Trigger: Parts Order Status])
+    Choice -->|6| Flow6([Trigger: View/Pay Invoice])
+    Choice -->|Invalid| Invalid[Send: Invalid Option]
+    Invalid --> ShowMenu
+    
+    Flow1 --> End([End Session])
+    Flow2 --> End
+    Flow3 --> End
+    Flow4 --> End
+    Flow5 --> End
+    Flow6 --> End
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style GetCustomer fill:#cce5ff
+    style StoreProfile fill:#fff3cd
+            </div>
+        </div>
+
+        <h3>📱 Message Templates</h3>
+
+        <div class="message-template">Welcome to [Dealer Name]! Reply with a number:
+1. Troubleshoot Equipment
+2. Schedule Service
+3. Service Status
+4. Order Parts
+5. Parts Order Status
+6. View or Pay Invoice</div>
+
+        <div class="message-template">You do not have an account with [Dealer Name]! 
+Please contact [Dealer Name] to setup an account.
+
+Reply with a number:
+1. Text Shop
+2. Call Shop
+3. Return to Menu</div>
+
+        <h3>🔑 Key Variables</h3>
+        <ul>
+            <li><code>flow.variables.customerProfile</code> - Complete customer data from API</li>
+            <li><code>trigger.message.From</code> - Customer phone number</li>
+        </ul>
+    </div>
+
+    <div class="section" id="troubleshoot">
+        <h2>2️⃣ Workflow: Troubleshoot Equipment</h2>
+        
+        <p>Allows customers to find equipment (4 methods), view resources, and navigate to service/parts workflows with equipment context.</p>
+
+        <div class="warning-box">
+            <strong>⚠️ Critical Feature:</strong> This workflow passes equipment context to other flows via <code>triggerFlowWithContext</code> Function. This is essential for smooth user experience.
+        </div>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Flow Triggered]) --> Menu[Send & Wait: Troubleshoot Menu]
+    
+    Menu --> Choice{User Selection}
+    
+    Choice -->|1| ShowFull[Send & Wait: Full Fleet List]
+    Choice -->|2| FilterType[Send & Wait: Filter by Unit Type]
+    Choice -->|3| EnterSKU[Send & Wait: Enter SKU]
+    Choice -->|4| EnterSN[Send & Wait: Enter SN]
+    
+    ShowFull --> SelectEquip1{User Selects Equipment}
+    SelectEquip1 --> StoreEquip1[Store Equipment Context]
+    
+    FilterType --> TypeChoice{Type Selected}
+    TypeChoice -->|1-4| FilterModel[Send & Wait: Filter by Model]
+    TypeChoice -->|5 Other| ShowFiltered[Send & Wait: Filtered List]
+    
+    FilterModel --> ShowFiltered
+    ShowFiltered --> SelectEquip2{User Selects Equipment}
+    SelectEquip2 --> StoreEquip2[Store Equipment Context]
+    
+    EnterSKU --> SearchSKUFunc[[Run Function: searchEquipmentBySKU]]
+    SearchSKUFunc --> SKUFound{SKU Found?}
+    SKUFound -->|Yes| StoreEquip3[Store Equipment Context]
+    SKUFound -->|No| SKUError[Send: SKU Not Found]
+    SKUError --> EnterSKU
+    
+    EnterSN --> SearchSNFunc[[Run Function: searchEquipmentBySN]]
+    SearchSNFunc --> SNFound{SN Found?}
+    SNFound -->|Yes| StoreEquip4[Store Equipment Context]
+    SNFound -->|No| SNError[Send: SN Not Found]
+    SNError --> EnterSN
+    
+    StoreEquip1 --> ShowResources
+    StoreEquip2 --> ShowResources
+    StoreEquip3 --> ShowResources
+    StoreEquip4 --> ShowResources
+    
+    ShowResources[Send: Equipment Resources] --> CheckStatus{Equipment Status}
+    
+    CheckStatus -->|In Service| InServiceOptions[Send & Wait: Options 1-7]
+    CheckStatus -->|Not In Service| StandardOptions[Send & Wait: Options 1-6]
+    
+    InServiceOptions --> InServiceChoice{User Selection}
+    StandardOptions --> StandardChoice{User Selection}
+    
+    InServiceChoice -->|1| TriggerService1
+    InServiceChoice -->|2| TriggerStatus
+    InServiceChoice -->|3| TriggerParts1
+    
+    StandardChoice -->|1| TriggerService2
+    StandardChoice -->|2| TriggerParts2
+    
+    TriggerService1[[Run Function: triggerFlowWithContext<br/>Target: Schedule Service]]
+    TriggerService2[[Run Function: triggerFlowWithContext<br/>Target: Schedule Service]]
+    TriggerParts1[[Run Function: triggerFlowWithContext<br/>Target: Order Parts]]
+    TriggerParts2[[Run Function: triggerFlowWithContext<br/>Target: Order Parts]]
+    
+    TriggerService1 -.-> End
+    TriggerService2 -.-> End
+    TriggerParts1 -.-> End
+    TriggerParts2 -.-> End
+    
+    End([End Session])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style SearchSKUFunc fill:#fff3cd
+    style SearchSNFunc fill:#fff3cd
+    style TriggerService1 fill:#fff3cd
+    style TriggerService2 fill:#fff3cd
+    style TriggerParts1 fill:#fff3cd
+    style TriggerParts2 fill:#fff3cd
+            </div>
+        </div>
+
+        <h3>📱 Key Message Template</h3>
+
+        <div class="message-template">{{equipmentName}} - SN: {{serialNumber}}
+
+Troubleshooting Resources:
+📺 Tutorial Video: {{videoUrl}}
+📖 Owner's Manual: {{manualUrl}}
+
+What would you like to do? Reply with a number:
+1. Schedule Service
+2. Order Parts
+3. Check Service Status (if In Service)
+4. Check Parts Order Status
+5. View or Pay Invoice
+6. Text or Call Dealer
+7. Main Menu</div>
+
+        <h3>🔑 Key Variables</h3>
+        <ul>
+            <li><code>flow.variables.selectedEquipmentId</code></li>
+            <li><code>flow.variables.selectedEquipmentName</code></li>
+            <li><code>flow.variables.selectedEquipmentSN</code></li>
+        </ul>
+    </div>
+
+    <div class="section" id="schedule">
+        <h2>3️⃣ Workflow: Schedule Service</h2>
+        
+        <p>Schedules equipment service with drop-off/pickup options, optional parts ordering, and async order processing.</p>
+
+        <div class="success-box">
+            <strong>✅ MVP Features:</strong>
+            <ul>
+                <li>Accepts equipment context from Troubleshoot workflow</li>
+                <li>Async order creation (immediate response, follow-up when complete)</li>
+                <li>Can jump to Order Parts and return</li>
+            </ul>
+        </div>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Flow Triggered]) --> CheckContext{Equipment Context<br/>from trigger.execution?}
+    
+    CheckContext -->|Yes - Context Exists| StoreContext[Store Equipment Variables<br/>from trigger.execution]
+    CheckContext -->|No - Standard Entry| ShowMenu[Send & Wait: Equipment Selection Menu]
+    
+    ShowMenu --> MenuChoice{User Selection}
+    MenuChoice -->|1| ShowFull[Send & Wait: Full Fleet List]
+    MenuChoice -->|2| FilterFlow[Filter by Type/Model]
+    
+    ShowFull --> SelectEquip[User Selects Equipment]
+    FilterFlow --> SelectEquip
+    
+    SelectEquip --> StoreEquip[Store Equipment Context]
+    StoreEquip --> Problem
+    StoreContext --> Problem
+    
+    Problem[Send & Wait: Problem Description<br/>Free Text Input] --> StoreProblem[Store problemDescription]
+    
+    StoreProblem --> OfferParts[Send & Wait: Order Parts to Expedite?]
+    
+    OfferParts --> PartsChoice{User Selection}
+    PartsChoice -->|1 Yes| TriggerParts[[Run Function: triggerFlowWithContext<br/>Target: Order Parts<br/>ReturnToService: true]]
+    PartsChoice -->|2 No| Dropoff
+    PartsChoice -->|3 Menu| MainMenu([Return to Main Menu])
+    
+    TriggerParts -.->|After Parts Order| ReturnPoint
+    
+    ReturnPoint{Returning from<br/>Parts Order?} -->|Yes| Dropoff
+    
+    Dropoff[Send & Wait: Drop-off Options<br/>1-4] --> DropoffChoice{User Selection}
+    
+    DropoffChoice -->|1 Today| CreateOrder
+    DropoffChoice -->|2 Tomorrow| CreateOrder
+    DropoffChoice -->|3 Pickup| ConfirmAddress
+    DropoffChoice -->|4 Menu| MainMenu
+    
+    ConfirmAddress[Send & Wait: Confirm Pickup Address] --> AddressChoice{User Selection}
+    AddressChoice -->|1 Use Default| PickupDate
+    AddressChoice -->|2 Enter New| EnterAddress[Send & Wait: Enter New Address]
+    AddressChoice -->|3 Menu| MainMenu
+    
+    EnterAddress --> StoreAddress[Store pickupAddress]
+    StoreAddress --> PickupDate
+    
+    PickupDate[Send & Wait: Pickup Date Options<br/>1-6] --> DateChoice{User Selection}
+    DateChoice -->|1-4 Preset| CreateOrder
+    DateChoice -->|5 Custom| EnterDate[Send & Wait: Enter MM/DD/YYYY]
+    
+    EnterDate --> StoreDate[Store pickupDate]
+    StoreDate --> CreateOrder
+    
+    CreateOrder[[Run Function: createServiceOrderAsync<br/>Returns Immediately]] --> ImmediateConfirm[Send: Immediate Confirmation<br/>Order Submitted...]
+    
+    ImmediateConfirm --> End
+    
+    CreateOrder -.->|Background Process| APICall[HTTP: POST /service-orders]
+    APICall -.->|When Complete| FollowupSMS[SMS: Order Confirmation<br/>with Invoice Links]
+    
+    End([End Session])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style CreateOrder fill:#fff3cd
+    style TriggerParts fill:#fff3cd
+    style APICall fill:#cce5ff
+            </div>
+        </div>
+
+        <h3>📱 Key Message Templates</h3>
+
+        <div class="message-template">{{equipmentName}} - Schedule Service
+
+Please describe the problem or service needed (be as detailed as possible):
+
+Format: Explain what's wrong or what service you need
+
+Examples:
+- "Engine won't start, makes clicking noise"
+- "Need oil change and blade sharpening"</div>
+
+        <div class="message-template">{{equipmentName}} - Schedule Service
+
+Your service order has been submitted. Thank you for scheduling 
+your service with [Dealer Name]! We will send you a copy of your 
+order and the option to pay your invoice as soon as the order is confirmed.
+
+What would you like to do? Reply with a number:
+1. Call Shop
+2. Text Shop
+3. Main Menu</div>
+
+        <div class="message-template">✅ Service Confirmed!
+
+Order #{{orderId}}
+{{equipmentName}} - {{problemDescription}}
+
+📄 View Invoice: {{invoiceUrl}}
+💳 Pay Now: {{paymentUrl}}
+
+Reply MENU for main menu</div>
+
+        <h3>🔑 Key Variables</h3>
+        <ul>
+            <li><code>trigger.execution.EquipmentId</code> - From cross-workflow context</li>
+            <li><code>trigger.execution.ReturnFromParts</code> - Return flag</li>
+            <li><code>flow.variables.problemDescription</code></li>
+            <li><code>flow.variables.dropOffType</code></li>
+            <li><code>flow.variables.pickupDate</code></li>
+        </ul>
+    </div>
+
+    <div class="section" id="status">
+        <h2>4️⃣ Workflow: Service Status</h2>
+        
+        <p>Displays current service orders with status, estimated completion, and invoice links.</p>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Flow Triggered]) --> GetTransactions[HTTP Request: GET /transactions<br/>Filter: service_orders]
+    
+    GetTransactions --> StoreData[Store transactions Variable]
+    
+    StoreData --> CheckCount{Any Orders<br/>In Service?}
+    
+    CheckCount -->|No| NoOrders[Send & Wait: No Equipment In Service<br/>1. Schedule Service<br/>2. Main Menu]
+    
+    NoOrders --> NoOrdersChoice{User Selection}
+    NoOrdersChoice -->|1| TriggerService([Trigger: Schedule Service])
+    NoOrdersChoice -->|2| MainMenu([Trigger: Main Menu])
+    
+    CheckCount -->|Yes| ShowList[Send & Wait: Service Orders List<br/>Display up to 10 orders]
+    
+    ShowList --> ListChoice{User Selection}
+    
+    ListChoice -->|1-10 Order| ShowDetail[Send: Order Details<br/>Equipment, Status, Est. Completion<br/>Invoice Links]
+    ListChoice -->|Show More| ShowMore[Send & Wait: Next 10 Orders]
+    ListChoice -->|Menu| MainMenu
+    
+    ShowMore --> MoreChoice{User Selection}
+    MoreChoice --> ShowDetail
+    MoreChoice --> MainMenu
+    
+    ShowDetail --> DetailOptions[Send & Wait: Exit Options<br/>1. Call 2. Text 3. Menu]
+    
+    DetailOptions --> ExitChoice{User Selection}
+    
+    ExitChoice -->|1| CallShop[Send: Call Information]
+    ExitChoice -->|2| TextShop[Trigger: Dealer Handoff]
+    ExitChoice -->|3| MainMenu
+    
+    TriggerService --> End
+    CallShop --> End
+    TextShop --> End
+    MainMenu --> End
+    
+    End([End Session])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style GetTransactions fill:#cce5ff
+            </div>
+        </div>
+
+        <h3>📱 Message Template</h3>
+
+        <div class="message-template">Equipment in Service - Reply with a number:
+1. Honda HRX217 - In Service - #SO789 - Est: Nov 15
+2. Husqvarna 450 - In Service - #SO456 - Est: Nov 18
+3. Main Menu</div>
+
+        <div class="message-template">Service Order #{{orderId}}
+{{equipmentName}} - SN: {{serialNumber}}
+
+Status: {{status}}
+Estimated Completion: {{estimatedCompletion}}
+
+📄 View Invoice: {{invoiceUrl}}
+💳 Pay Now: {{paymentUrl}}
+
+Reply with a number:
+1. Call Shop
+2. Text Shop
+3. Main Menu</div>
+    </div>
+
+    <div class="section" id="order-parts">
+        <h2>5️⃣ Workflow: Order Parts</h2>
+        
+        <p>Order parts with simplified MVP approach: Top 10 common parts, single part per order.</p>
+
+        <div class="warning-box">
+            <strong>⭐ MVP Simplifications:</strong>
+            <ul>
+                <li>Top 10 common parts only (sorted by popularity TBD)</li>
+                <li>Single part per order</li>
+                <li>Option to text shop for other parts</li>
+                <li>Can return to Schedule Service flow</li>
+            </ul>
+        </div>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Flow Triggered]) --> CheckContext{Equipment Context<br/>from trigger.execution?}
+    
+    CheckContext -->|Yes| StoreContext[Store Equipment Context<br/>Check ReturnToService Flag]
+    CheckContext -->|No| ShowMenu[Send & Wait: Equipment Selection Menu]
+    
+    ShowMenu --> MenuChoice{User Selection}
+    MenuChoice -->|1| ShowFull[Equipment Selection Flow]
+    
+    ShowFull --> StoreEquip[Store Equipment Context]
+    
+    StoreEquip --> ShowParts
+    StoreContext --> ShowParts
+    
+    ShowParts[Send & Wait: Top 10 Common Parts<br/>11. Text Shop for Other Parts<br/>12. Main Menu]
+    
+    ShowParts --> PartsChoice{User Selection}
+    
+    PartsChoice -->|1-10| ShowPartDetail[Send: Part Details<br/>Description, Price, Availability]
+    PartsChoice -->|11| TextShop[Trigger: Dealer Handoff]
+    PartsChoice -->|12| MainMenu([Trigger: Main Menu])
+    
+    ShowPartDetail --> EnterQty[Send & Wait: Enter Quantity 1-99]
+    
+    EnterQty --> StoreQty[Store partQuantity]
+    
+    StoreQty --> CalcTotal[Calculate Total]
+    
+    CalcTotal --> ShowShipping[Send & Wait: Shipping Options<br/>1. Ship to Default<br/>2. Change Address<br/>3. Will Call<br/>4. Main Menu]
+    
+    ShowShipping --> ShipChoice{User Selection}
+    
+    ShipChoice -->|1| CreateOrder
+    ShipChoice -->|2| EnterAddress[Send & Wait: Enter New Address]
+    ShipChoice -->|3| CreateOrder
+    ShipChoice -->|4| MainMenu
+    
+    EnterAddress --> ConfirmAddress[Send & Wait: Confirm Address]
+    ConfirmAddress --> ConfirmChoice{User Selection}
+    ConfirmChoice -->|1 Confirm| CreateOrder
+    ConfirmChoice -->|2 Re-enter| EnterAddress
+    ConfirmChoice -->|3 Menu| MainMenu
+    
+    CreateOrder[[Run Function: createPartsOrderAsync]] --> OrderCreated{Order Success?}
+    
+    OrderCreated -->|Success| CheckReturn{ReturnToService<br/>Flag Set?}
+    OrderCreated -->|Fail| OrderError[Send: Error Message]
+    
+    OrderError --> ErrorOptions[Send & Wait: 1. Text 2. Call 3. Menu]
+    ErrorOptions --> ExitChoice
+    
+    CheckReturn -->|Yes - Return to Service| ReturnMsg[Send: Returning to service scheduling...]
+    CheckReturn -->|No - Standard Exit| SuccessMsg[Send: Order Confirmation]
+    
+    ReturnMsg --> TriggerService[[Run Function: triggerFlowWithContext<br/>Target: Schedule Service<br/>ReturnFromParts: true]]
+    
+    SuccessMsg --> ExitOptions[Send & Wait: Exit Options]
+    
+    ExitOptions --> ExitChoice{User Selection}
+    
+    ExitChoice -->|1| CallShop[Send: Call Information]
+    ExitChoice -->|2| TextShop
+    ExitChoice -->|3| MainMenu
+    
+    TriggerService -.-> End
+    TextShop --> End
+    CallShop --> End
+    MainMenu --> End
+    
+    End([End Session])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style CreateOrder fill:#fff3cd
+    style TriggerService fill:#fff3cd
+            </div>
+        </div>
+
+        <h3>📱 Key Message Templates</h3>
+
+        <div class="message-template">Top 10 Common Parts for {{equipmentName}}
+
+Reply with a number:
+1. Air Filter - #17211-ZL8-023 - $12.99
+2. Spark Plug - #98079-55846 - $8.99
+3. Blade - #72511-VH7-000 - $45.99
+... (up to 10)
+11. Text Shop for other parts
+12. Main Menu</div>
+
+        <div class="message-template">✅ Parts Order Confirmed!
+
+Order #{{orderId}}
+{{equipmentName}} - {{partDescription}} (Qty: {{quantity}})
+Total: ${{total}}
+
+📦 Ship to: {{shippingAddress}}
+🚚 Est. Delivery: {{deliveryDate}}
+
+📄 View Invoice: {{invoiceUrl}}
+💳 Pay Now: {{paymentUrl}}
+
+Reply with a number:
+1. Call Shop
+2. Text Shop
+3. Main Menu</div>
+
+        <h3>🔑 Key Variables</h3>
+        <ul>
+            <li><code>trigger.execution.ReturnToService</code> - Return flag</li>
+            <li><code>flow.variables.selectedPartNumber</code></li>
+            <li><code>flow.variables.partQuantity</code></li>
+            <li><code>flow.variables.orderTotal</code></li>
+        </ul>
+    </div>
+
+    <div class="section" id="parts-status">
+        <h2>6️⃣ Workflow: Parts Order Status</h2>
+        
+        <p>Displays parts orders with tracking, delivery estimates, and invoice links.</p>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Flow Triggered]) --> GetTransactions[HTTP Request: GET /transactions<br/>Filter: parts_orders]
+    
+    GetTransactions --> StoreData[Store transactions Variable]
+    
+    StoreData --> CheckCount{Any Parts<br/>Orders?}
+    
+    CheckCount -->|No| NoOrders[Send & Wait: No Parts Orders<br/>1. Order Parts<br/>2. Main Menu]
+    
+    NoOrders --> NoOrdersChoice{User Selection}
+    NoOrdersChoice -->|1| TriggerParts([Trigger: Order Parts])
+    NoOrdersChoice -->|2| MainMenu([Trigger: Main Menu])
+    
+    CheckCount -->|Yes| ShowList[Send & Wait: Parts Orders List<br/>Display up to 10 orders]
+    
+    ShowList --> ListChoice{User Selection}
+    
+    ListChoice -->|1-10 Order| ShowDetail[Send: Order Details<br/>Status, Items, Tracking, Delivery]
+    ListChoice -->|Show More| ShowMore[Send & Wait: Next 10 Orders]
+    ListChoice -->|Menu| MainMenu
+    
+    ShowMore --> MoreChoice{User Selection}
+    MoreChoice --> ShowDetail
+    MoreChoice --> MainMenu
+    
+    ShowDetail --> DetailOptions[Send & Wait: Exit Options<br/>1. Call 2. Text 3. Menu]
+    
+    DetailOptions --> ExitChoice{User Selection}
+    
+    ExitChoice -->|1| CallShop[Send: Call Information]
+    ExitChoice -->|2| TextShop[Trigger: Dealer Handoff]
+    ExitChoice -->|3| MainMenu
+    
+    TriggerParts --> End
+    CallShop --> End
+    TextShop --> End
+    MainMenu --> End
+    
+    End([End Session])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style GetTransactions fill:#cce5ff
+            </div>
+        </div>
+
+        <h3>📱 Message Template</h3>
+
+        <div class="message-template">Your Parts Orders - Reply with a number:
+1. #PO456 - Pending - Air Filter
+2. #PO789 - Shipped - Spark Plug
+3. #PO123 - Delivered - Blade
+4. Show More Orders
+5. Main Menu</div>
+
+        <div class="message-template">Parts Order #{{orderId}}
+
+Equipment: {{equipmentName}}
+Status: {{status}}
+Tracking: {{trackingNumber}}
+
+Items:
+- {{item1Description}} (Qty: {{qty1}}) - ${{price1}}
+
+🚚 Est. Delivery: {{deliveryDate}}
+
+📄 View Invoice: {{invoiceUrl}}
+💳 Pay Now: {{paymentUrl}}
+
+Reply with a number:
+1. Call Shop
+2. Text Shop
+3. Main Menu</div>
+    </div>
+
+    <div class="section" id="invoice">
+        <h2>7️⃣ Workflow: View or Pay Invoice</h2>
+        
+        <p>Browse and pay invoices by type (unit sale, service, parts).</p>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TD
+    Start([Flow Triggered]) --> ShowTypeMenu[Send & Wait: Invoice Type Menu<br/>1. Unit Sale<br/>2. Service<br/>3. Parts<br/>4-6. Other Options]
+    
+    ShowTypeMenu --> TypeChoice{User Selection}
+    
+    TypeChoice -->|1| GetUnitSale[HTTP Request: GET /transactions<br/>Filter: type=unit_sale]
+    TypeChoice -->|2| GetService[HTTP Request: GET /transactions<br/>Filter: type=service]
+    TypeChoice -->|3| GetParts[HTTP Request: GET /transactions<br/>Filter: type=parts]
+    TypeChoice -->|4| CallShop[Send: Call Information]
+    TypeChoice -->|5| TextShop[Trigger: Dealer Handoff]
+    TypeChoice -->|6| MainMenu([Trigger: Main Menu])
+    
+    GetUnitSale --> StoreInvoices1[Store Filtered Invoices]
+    GetService --> StoreInvoices2[Store Filtered Invoices]
+    GetParts --> StoreInvoices3[Store Filtered Invoices]
+    
+    StoreInvoices1 --> CheckCount
+    StoreInvoices2 --> CheckCount
+    StoreInvoices3 --> CheckCount
+    
+    CheckCount{Any Invoices<br/>of This Type?}
+    
+    CheckCount -->|No| NoInvoices[Send & Wait: No Invoices<br/>1. View Other Types<br/>2. Main Menu]
+    
+    NoInvoices --> NoInvChoice{User Selection}
+    NoInvChoice -->|1| ShowTypeMenu
+    NoInvChoice -->|2| MainMenu
+    
+    CheckCount -->|Yes| ShowList[Send & Wait: Invoices List<br/>Display up to 10]
+    
+    ShowList --> ListChoice{User Selection}
+    
+    ListChoice -->|1-10| ShowDetail[Send: Invoice Details<br/>Amount, Status, Due Date, Pay Links]
+    ListChoice -->|Show More| ShowMore[Send & Wait: Next 10 Invoices]
+    ListChoice -->|Menu| MainMenu
+    
+    ShowMore --> MoreChoice{User Selection}
+    MoreChoice --> ShowDetail
+    MoreChoice --> MainMenu
+    
+    ShowDetail --> DetailOptions[Send & Wait: Exit Options<br/>1. Call 2. Text 3. Menu]
+    
+    DetailOptions --> ExitChoice{User Selection}
+    
+    ExitChoice -->|1| CallShop
+    ExitChoice -->|2| TextShop
+    ExitChoice -->|3| MainMenu
+    
+    CallShop --> End
+    TextShop --> End
+    MainMenu --> End
+    
+    End([End Session])
+    
+    style Start fill:#d4edda
+    style End fill:#f8d7da
+    style GetUnitSale fill:#cce5ff
+    style GetService fill:#cce5ff
+    style GetParts fill:#cce5ff
+            </div>
+        </div>
+
+        <h3>📱 Message Templates</h3>
+
+        <div class="message-template">View or Pay Invoice - Reply with a number:
+1. Unit Sale Invoice
+2. Service Invoice
+3. Parts Invoice
+4. Call Shop
+5. Text Shop
+6. Main Menu</div>
+
+        <div class="message-template">Service Invoices - Reply with a number:
+1. #INV789 - Unpaid - $150.00 - Nov 5
+2. #INV456 - Unpaid - $45.00 - Oct 28
+3. #INV123 - Paid - $220.00 - Oct 15
+4. Show More Invoices
+5. Main Menu</div>
+
+        <div class="message-template">Invoice #{{invoiceId}}
+Order #{{orderId}}
+
+{{equipmentName}} - {{description}}
+
+Amount: ${{amount}}
+Status: {{status}}
+Due Date: {{dueDate}}
+
+📄 View Invoice: {{invoiceUrl}}
+💳 Pay Now: {{paymentUrl}}
+
+Reply with a number:
+1. Call Shop
+2. Text Shop
+3. Main Menu</div>
+    </div>
+
+    <div class="section" id="cross-flow">
+        <h2>🔗 Cross-Workflow Context Passing</h2>
+        
+        <p>This diagram shows how equipment context flows between workflows using the <code>triggerFlowWithContext</code> Function - your critical MVP feature.</p>
+
+        <div class="success-box">
+            <h4>✨ Why This Matters</h4>
+            <p>Without context passing, customers would have to re-select equipment every time they switch workflows. With it, they select equipment once in Troubleshoot and it carries through to Schedule Service and Order Parts automatically.</p>
+        </div>
+
+        <div class="diagram">
+            <div class="mermaid">
+graph TB
+    subgraph "Troubleshoot Equipment Flow"
+        TS1[Customer Selects Equipment]
+        TS2[Views Resources]
+        TS3{User Selects Action}
+        TS3 -->|Schedule Service| TStoSS
+        TS3 -->|Order Parts| TStoOP
+    end
+    
+    subgraph "Schedule Service Flow"
+        SS1{Check trigger.execution<br/>for Equipment Context}
+        SS2[Equipment Context Found<br/>Store in flow.variables]
+        SS3[Skip Equipment Selection]
+        SS4[Jump to Problem Description]
+        SS5{User Selects<br/>Order Parts?}
+        SS5 -->|Yes| SStoOP
+    end
+    
+    subgraph "Order Parts Flow"
+        OP1{Check trigger.execution<br/>for Equipment Context<br/>and ReturnToService Flag}
+        OP2[Equipment Context Found<br/>Store in flow.variables]
+        OP3[Skip Equipment Selection]
+        OP4[Jump to Parts List]
+        OP5[Complete Parts Order]
+        OP6{ReturnToService<br/>Flag Set?}
+        OP6 -->|Yes| OPtoSS
+        OP6 -->|No| OPEnd[Standard Exit Options]
+    end
+    
+    subgraph "triggerFlowWithContext Function"
+        F1[Receive: targetFlow, equipmentId,<br/>equipmentName, equipmentSN,<br/>returnToService flag]
+        F2[Map targetFlow to Flow SID]
+        F3[Call Twilio REST API:<br/>studio.flows.executions.create]
+        F4[Pass Equipment Context<br/>as execution parameters]
+        F5[Return: success/executionSid]
+    end
+    
+    TS1 --> TS2
+    TS2 --> TS3
+    
+    TStoSS[[Run Function:<br/>triggerFlowWithContext]] -.->|REST API Trigger| F1
+    TStoOP[[Run Function:<br/>triggerFlowWithContext]] -.->|REST API Trigger| F1
+    
+    F1 --> F2
+    F2 --> F3
+    F3 --> F4
+    F4 --> F5
+    
+    F5 -.->|New Execution<br/>with Parameters| SS1
+    F5 -.->|New Execution<br/>with Parameters| OP1
+    
+    SS1 -->|Context Found| SS2
+    SS1 -->|No Context| SSNormal[Standard Equipment<br/>Selection Flow]
+    SS2 --> SS3
+    SS3 --> SS4
+    SS4 --> SS5
+    
+    SStoOP[[Run Function:<br/>triggerFlowWithContext<br/>ReturnToService: true]] -.->|REST API Trigger| F1
+    
+    OP1 -->|Context Found| OP2
+    OP1 -->|No Context| OPNormal[Standard Equipment<br/>Selection Flow]
+    OP2 --> OP3
+    OP3 --> OP4
+    OP4 --> OP5
+    OP5 --> OP6
+    
+    OPtoSS[[Run Function:<br/>triggerFlowWithContext<br/>ReturnFromParts: true]] -.->|REST API Trigger| F1
+    
+    style TStoSS fill:#FFD700
+    style TStoOP fill:#FFD700
+    style SStoOP fill:#FFD700
+    style OPtoSS fill:#FFD700
+    style F1 fill:#FFD700
+    style F2 fill:#FFD700
+    style F3 fill:#FFD700
+    style F4 fill:#FFD700
+    style F5 fill:#FFD700
+            </div>
+        </div>
+
+        <h3>🔧 How It Works</h3>
+
+        <ol>
+            <li><strong>Source Flow</strong> (e.g., Troubleshoot) calls <code>triggerFlowWithContext</code> Function</li>
+            <li><strong>Function</strong> receives equipment context and target flow name</li>
+            <li><strong>Function</strong> maps flow name to Twilio Flow SID</li>
+            <li><strong>Function</strong> triggers target flow via REST API with execution parameters</li>
+            <li><strong>Target Flow</strong> checks <code>trigger.execution.*</code> for context</li>
+            <li><strong>Target Flow</strong> skips equipment selection if context found</li>
+            <li><strong>All messages</strong> display equipment context</li>
+        </ol>
+
+        <h3>📦 Execution Parameters Passed</h3>
+
+        <div class="message-template">{
+  "EquipmentId": "EQ123",
+  "EquipmentName": "Honda HRX217",
+  "EquipmentSN": "MZCG-1234567",
+  "ReturnToService": false,
+  "ReturnFromParts": false
+}</div>
+
+        <h3>🧪 Testing Cross-Flow Context</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Scenario</th>
+                    <th>Expected Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Troubleshoot → Schedule Service</td>
+                    <td>✅ Equipment name displayed, no selection menu</td>
+                </tr>
+                <tr>
+                    <td>Schedule Service → Order Parts → Return</td>
+                    <td>✅ Equipment preserved, returns to drop-off options</td>
+                </tr>
+                <tr>
+                    <td>Main Menu → Schedule Service</td>
+                    <td>✅ Equipment selection menu appears (no context)</td>
+                </tr>
+                <tr>
+                    <td>Context displays in all messages</td>
+                    <td>✅ Equipment name shows in every message</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>🎯 Next Steps</h2>
+        
+        <div class="success-box">
+            <h3>✅ You Now Have Visual Blueprints</h3>
+            <p>All diagrams are rendered and ready to use. You can:</p>
+            <ul>
+                <li>View all workflows visually</li>
+                <li>Understand every widget needed</li>
+                <li>See all decision paths</li>
+                <li>Understand cross-workflow connections</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3>📚 Reference Documents</h3>
+            <p>Use these diagrams alongside:</p>
+            <ul>
+                <li><strong>MVP Implementation Guide</strong> - Detailed widget configurations</li>
+                <li><strong>Quick Reference Card</strong> - Fast lookup while building</li>
+                <li><strong>API Requirements Document</strong> - For Lizzy team</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>🚀 Ready to Build</h3>
+            <p><strong>Build order:</strong></p>
+            <ol>
+                <li>Main Menu (simplest)</li>
+                <li>Troubleshoot Equipment</li>
+                <li>Schedule Service</li>
+                <li>Service Status</li>
+                <li>Parts Order Status</li>
+                <li>View/Pay Invoice</li>
+                <li>Order Parts (simplified)</li>
+                <li>Cross-workflow triggers (last)</li>
+            </ol>
+        </div>
+    </div>
+
+    <a href="#top" class="back-to-top">↑ Back to Top</a>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

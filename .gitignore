@@ -1,0 +1,60 @@
+# Lizzy SMS Workflows - Git Ignore File
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+
+# Environment variables (contain secrets)
+.env
+.env.local
+.env.*.local
+
+# Node modules (if you add Node.js code later)
+node_modules/
+npm-debug.log
+
+# Build outputs
+dist/
+build/
+
+# Private notes
+PRIVATE_NOTES.md
+TODO_PRIVATE.md
+scratch/
+
+# Twilio credentials
+.twilio-cli/
+twilio-credentials.json
+
+# AWS credentials
+.aws/
+aws-credentials.json
+
+# Database files
+*.db
+*.sqlite
+
+# Draft documents
+DRAFT_*.md
+drafts/
